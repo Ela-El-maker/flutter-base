@@ -39,15 +39,15 @@ class RouteGenerator {
         );
       case Routes.registerRoute:
         return MaterialPageRoute(
-          builder: (_) => RegisterView(),
+          builder: (_) =>  RegisterView(),
         );
       case Routes.forgotPasswordRoute:
         return MaterialPageRoute(
-          builder: (_) => ForgotPasswordView(),
+          builder: (_) =>  ForgotPasswordView(),
         );
       case Routes.storeDetailsRoute:
         return MaterialPageRoute(
-          builder: (_) => StoreDetailsView(),
+          builder: (_) =>  StoreDetailsView(),
         );
       default:
         return unDefinedRoute();
@@ -58,9 +58,9 @@ class RouteGenerator {
     return MaterialPageRoute(
       builder: (_) => Scaffold(
         appBar: AppBar(
-          title: Text(AppStrings.noRouteFound),
+          title: const Text(AppStrings.noRouteFound),
         ),
-        body: Center(
+        body: const Center(
           child: Text(
             AppStrings.noRouteFound,
           ),
