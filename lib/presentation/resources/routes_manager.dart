@@ -23,31 +23,31 @@ class RouteGenerator {
     switch (routeSettings.name) {
       case Routes.splashRoute:
         return MaterialPageRoute(
-          builder: (_) => SplashView(),
+          builder: (_) => const SplashView(),
         );
       case Routes.loginRoute:
         return MaterialPageRoute(
-          builder: (_) => LoginView(),
+          builder: (_) => const LoginView(),
         );
       case Routes.onBoardingRoute:
         return MaterialPageRoute(
-          builder: (_) => OnBoardingView(),
+          builder: (_) => const OnBoardingView(),
         );
       case Routes.mainRoute:
         return MaterialPageRoute(
-          builder: (_) => MainView(),
+          builder: (_) => const MainView(),
         );
       case Routes.registerRoute:
         return MaterialPageRoute(
-          builder: (_) =>  RegisterView(),
+          builder: (_) =>  const RegisterView(),
         );
       case Routes.forgotPasswordRoute:
         return MaterialPageRoute(
-          builder: (_) =>  ForgotPasswordView(),
+          builder: (_) =>  const ForgotPasswordView(),
         );
       case Routes.storeDetailsRoute:
         return MaterialPageRoute(
-          builder: (_) =>  StoreDetailsView(),
+          builder: (_) =>  const StoreDetailsView(),
         );
       default:
         return unDefinedRoute();

@@ -8,16 +8,16 @@ import 'package:initial/presentation/resources/strings_manager.dart';
 import 'package:initial/presentation/resources/values_manager.dart';
 
 class OnBoardingView extends StatefulWidget {
-  OnBoardingView({super.key});
+  const OnBoardingView({super.key});
 
   @override
   State<OnBoardingView> createState() => _OnBoardingViewState();
 }
 
 class _OnBoardingViewState extends State<OnBoardingView> {
-  PageController _pageController = PageController(initialPage: 0);
+  final PageController _pageController = PageController(initialPage: 0);
 
-  OnBoardingViewModel _viewModel = OnBoardingViewModel();
+  final OnBoardingViewModel _viewModel = OnBoardingViewModel();
   _bind() {
     _viewModel.start();
   }
@@ -42,7 +42,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
   Widget _getContentWidget(SliderViewObject? sliderViewObject) {
     if (sliderViewObject == null) {
       return Container();
-    } else
+    } else {
       return Scaffold(
         appBar: AppBar(
           backgroundColor: ColorManager.white,
@@ -88,6 +88,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
           ),
         ),
       );
+    }
   }
 
   Widget _getBottomSheetWidget(SliderViewObject sliderViewObject) {
@@ -98,7 +99,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
         children: [
           //Left Arrow
           Padding(
-            padding: EdgeInsets.all(AppPadding.p14),
+            padding: const EdgeInsets.all(AppPadding.p14),
             child: GestureDetector(
               child: SizedBox(
                 height: AppSize.s20,
@@ -109,7 +110,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                 //go to previous slide
                 _pageController.animateToPage(
                   _viewModel.goPrevious(),
-                  duration: Duration(milliseconds: DurationConstant.d300),
+                  duration: const Duration(milliseconds: DurationConstant.d300),
                   curve: Curves.bounceInOut,
                 );
               },
@@ -121,7 +122,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
             children: [
               for (int i = 0; i < sliderViewObject.numOfSlides; i++)
                 Padding(
-                  padding: EdgeInsets.all(AppPadding.p8),
+                  padding: const EdgeInsets.all(AppPadding.p8),
                   child: _getProperCircle(i, sliderViewObject.currentIndex),
                 ),
             ],
@@ -129,7 +130,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
 
           // Right Arrow
           Padding(
-            padding: EdgeInsets.all(AppPadding.p14),
+            padding: const EdgeInsets.all(AppPadding.p14),
             child: GestureDetector(
               child: SizedBox(
                 height: AppSize.s20,
@@ -140,7 +141,7 @@ class _OnBoardingViewState extends State<OnBoardingView> {
                 //go to next slide
                 _pageController.animateToPage(
                   _viewModel.goNext(),
-                  duration: Duration(milliseconds: DurationConstant.d300),
+                  duration: const Duration(milliseconds: DurationConstant.d300),
                   curve: Curves.bounceInOut,
                 );
               },
@@ -151,8 +152,8 @@ class _OnBoardingViewState extends State<OnBoardingView> {
     );
   }
 
-  Widget _getProperCircle(int index, int _currentIndex) {
-    if (index == _currentIndex) {
+  Widget _getProperCircle(int index, int currentIndex) {
+    if (index == currentIndex) {
       return SvgPicture.asset(ImageAssets.hollowCircleIc);
     } else {
       return SvgPicture.asset(ImageAssets.solidCircleIc);
@@ -168,15 +169,15 @@ class _OnBoardingViewState extends State<OnBoardingView> {
 }
 
 class OnBoardingPage extends StatelessWidget {
-  SliderObject _sliderObject;
-  OnBoardingPage(this._sliderObject, {super.key});
+  final SliderObject _sliderObject;
+  const OnBoardingPage(this._sliderObject, {super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       mainAxisAlignment: MainAxisAlignment.start,
       children: [
-        SizedBox(
+        const SizedBox(
           height: AppSize.s40,
         ),
         Padding(
@@ -195,7 +196,7 @@ class OnBoardingPage extends StatelessWidget {
             style: Theme.of(context).textTheme.displayMedium,
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: AppSize.s60,
         ),
         SvgPicture.asset(_sliderObject.image),
