@@ -15,4 +15,13 @@ class AppStrings
   static const String onBoardingSubTitle5 = "Ela App is an awesome flutter application using clean architecture #5";
 
   static const String skip = "Skip";
+  static const String Username = "Username";
+  static const String UsernameError = "Incorrect Username";
+  static const String Password = "Password";
+  static const String PasswordError = "Incorrect Password";
+  static const String login = "Login";
+  static const String ForgetPassword = "Forget Password ?";
+  static const String registerText = "Not a member ? Sign Up";
+
+
 }

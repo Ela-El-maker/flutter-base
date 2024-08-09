@@ -7,6 +7,8 @@ import 'package:initial/presentation/resources/color_manager.dart';
 import 'package:initial/presentation/resources/strings_manager.dart';
 import 'package:initial/presentation/resources/values_manager.dart';
 
+import '../resources/routes_manager.dart';
+
 class OnBoardingView extends StatefulWidget {
   const OnBoardingView({super.key});
 
@@ -73,7 +75,10 @@ class _OnBoardingViewState extends State<OnBoardingView> {
               Align(
                 alignment: Alignment.centerRight,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                      Navigator.pushReplacementNamed(
+                          context, Routes.loginRoute);
+                    },
                   child: Text(
                     AppStrings.skip,
                     style: Theme.of(context).textTheme.displayMedium,
