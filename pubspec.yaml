@@ -47,6 +47,7 @@ dependencies:
   device_info_plus: ^10.1.1
   freezed: ^2.5.2
   get_it: ^7.7.0
+  lottie: ^3.1.2
 
 
 
@@ -88,6 +89,11 @@ flutter:
     - assets/images/left_arrow_ic.svg
     - assets/images/right_arrow_ic.svg
     - assets/images/solid_circle_ic.svg
+    - assets/json/loading.json
+    - assets/json/error.json
+    - assets/json/empty.json
+
+
   
 
 

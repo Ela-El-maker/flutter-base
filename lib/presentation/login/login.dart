@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:initial/data/data_source/remote_data_source.dart';
-import 'package:initial/data/repository/repository_impl.dart';
-import 'package:initial/domain/repository/repository.dart';
-import 'package:initial/domain/usecase/login_usecase.dart';
+import 'package:initial/presentation/common/state_renderer/state_renderer_impl.dart';
 import 'package:initial/presentation/login/login_viewmodel.dart';
 import 'package:initial/presentation/resources/assets_manager.dart';
 import 'package:initial/presentation/resources/color_manager.dart';
@@ -52,13 +48,27 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return _getContentwidget();
+    return Scaffold(
+     
+      backgroundColor: ColorManager.white,
+      
+      body: StreamBuilder<FlowState>(
+        stream: _viewModel.outputState,
+        builder: (context,snapshot){
+        return   snapshot.data?.getScreenWidget(
+            context, 
+            _getContentwidget(), 
+            (){
+              _viewModel.login();
+            },
+          ) ?? _getContentwidget() ;
+        },
+      ),
+    );
   }
 
   Widget _getContentwidget() {
-    return Scaffold(
-      backgroundColor: ColorManager.white,
-      body: Container(
+    return Container(
         padding: EdgeInsets.only(top: AppPadding.p100),
         child: SingleChildScrollView(
           child: Form(
@@ -183,7 +193,7 @@ class _LoginViewState extends State<LoginView> {
             ),
           ),
         ),
-      ),
+
     );
   }
 
