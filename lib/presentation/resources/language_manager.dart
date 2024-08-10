@@ -1,19 +1,20 @@
-enum LanguageType{
-  ENGLISH,FRENCH
-}
+import 'package:flutter/material.dart';
 
-const String FRENCH = "fr";
+enum LanguageType { ENGLISH, ARABIC }
+
+const String ARABIC = "ar";
 const String ENGLISH = "en";
-extension LanguageTypeExtension on LanguageType{
-  String getValue(){
-    switch(this){
-      
+const String ASSETS_PATH_LOCALISATIONS = "assets/translations";
+const Locale ARABIC_LOCAL = Locale("ar","SA");
+const Locale ENGLISH_LOCAL = Locale("en","US");
+
+extension LanguageTypeExtension on LanguageType {
+  String getValue() {
+    switch (this) {
       case LanguageType.ENGLISH:
-        // TODO: Handle this case.
         return ENGLISH;
-      case LanguageType.FRENCH:
-        // TODO: Handle this case.
-        return FRENCH;
+      case LanguageType.ARABIC:
+        return ARABIC;
     }
   }
 }

@@ -1,27 +1,25 @@
-// extension on string
+// extension on String
+
 import 'package:initial/data/mapper/mapper.dart';
 
-extension NonNullString on String?{
-  String orEmpty(){
-    if(this == null){
+extension NonNullString on String? {
+  String orEmpty() {
+    if (this == null) {
       return EMPTY;
-    }
-    else{
+    } else {
       return this!;
     }
   }
 }
 
-// extension on integer
-extension NonNullInteger on int?{
-  int orZero(){
-    if(this == null){
+// extension on Integer
+
+extension NonNullInteger on int? {
+  int orZero() {
+    if (this == null) {
       return ZERO;
-    }
-    else{
+    } else {
       return this!;
     }
   }
 }
-
-

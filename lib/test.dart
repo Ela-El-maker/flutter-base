@@ -1,20 +1,18 @@
+ import 'package:initial/app/app.dart';
 import 'package:flutter/material.dart';
-import 'package:initial/app/app.dart';
 
 class Test extends StatelessWidget {
-  const Test({super.key});
+   const Test({Key? key}) : super(key: key);
 
-  void updateAppState()
-  {
-    MyApp.instance.appState =10;
-  }
+   void updateAppState(){
+     MyApp.instance.appState =10;
+   }
+   void getAppState(){
+     print( MyApp.instance.appState); // 10
+   }
 
-  void getAppstate()
-  {
-    print(MyApp.instance.appState);// 10
-  }
-  @override
-  Widget build(BuildContext context) {
-    return const Placeholder();
-  }
-}
+   @override
+   Widget build(BuildContext context) {
+     return Container();
+   }
+ }

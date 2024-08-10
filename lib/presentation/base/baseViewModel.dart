@@ -1,42 +1,35 @@
 import 'dart:async';
 
-import 'package:initial/presentation/common/state_renderer/state_renderer_impl.dart';
+import 'package:initial/presentation/common/state_renderer/state_render_impl.dart';
+import 'package:rxdart/rxdart.dart';
 
-abstract class BaseViewModel extends BaseviewmodelInputs with BaseviewmodelOutputs {
-  // shared variables and functions that will be used through anyview model
+abstract class BaseViewModel extends BaseViewModelInputs
+    with BaseViewModelOutputs {
+  StreamController _inputStateStreamController =
+  BehaviorSubject<FlowState>();
 
-  StreamController _inputStateStreamController = StreamController<FlowState>.broadcast();
-  
   @override
-  // TODO: implement inputState
   Sink get inputState => _inputStateStreamController.sink;
 
-
   @override
-  // TODO: implement outputState
-  Stream<FlowState> get outputState => _inputStateStreamController.stream.map((flowState)=>flowState);
+  Stream<FlowState> get outputState =>
+      _inputStateStreamController.stream.map((flowState) => flowState);
 
-
-
-  
-  
   @override
   void dispose() {
     _inputStateStreamController.close();
   }
 
-
-
+// shared variables and functions that will be used through any view model.
 }
-abstract class BaseviewmodelInputs{
-  void start(); // will be called while init. of the view model
+
+abstract class BaseViewModelInputs {
+  void start(); // will be called while init. of view model
   void dispose(); // will be called when viewmodel dies.
 
-
-Sink get inputState;
-
+  Sink get inputState;
 }
-mixin BaseviewmodelOutputs{
-  
+
+abstract class BaseViewModelOutputs {
   Stream<FlowState> get outputState;
 }

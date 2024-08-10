@@ -1,144 +1,146 @@
 import 'dart:async';
 
 import 'package:initial/domain/usecase/login_usecase.dart';
+import 'package:initial/presentation/base/baseviewmodel.dart';
+import 'package:initial/presentation/common/freezed_data_classes.dart';
+import 'package:initial/presentation/common/state_renderer/state_render_impl.dart';
 import 'package:initial/presentation/common/state_renderer/state_renderer.dart';
-import 'package:initial/presentation/common/state_renderer/state_renderer_impl.dart';
-
-import '../base/baseViewModel.dart';
-import '../common/freezed_data_classes.dart';
 
 class LoginViewModel extends BaseViewModel
     with LoginViewModelInputs, LoginViewModelOutputs {
   StreamController _userNameStreamController =
-      StreamController<String>.broadcast();
+  StreamController<String>.broadcast();
   StreamController _passwordStreamController =
-      StreamController<String>.broadcast();
+  StreamController<String>.broadcast();
 
   StreamController _isAllInputsValidStreamController =
-      StreamController<void>.broadcast();
+  StreamController<void>.broadcast();
+
+  StreamController isUserLoggedInSuccessfullyStreamController = StreamController<String>();
 
   var loginObject = LoginObject("", "");
 
   LoginUseCase _loginUseCase;
+
   LoginViewModel(this._loginUseCase);
 
+  // inputs
   @override
   void dispose() {
-    // TODO: implement dispose
     _userNameStreamController.close();
-    _passwordStreamController.close();
     _isAllInputsValidStreamController.close();
+    _passwordStreamController.close();
+    isUserLoggedInSuccessfullyStreamController.close();
   }
 
   @override
   void start() {
-    // TODO: implement start
-    //view tells state renderer please show the content of the screen
+    // view tells state renderer, please show the content of the screen
     inputState.add(ContentState());
   }
 
   @override
-  // TODO: implement inputPassword
   Sink get inputPassword => _passwordStreamController.sink;
 
   @override
-  // TODO: implement inputUserName
   Sink get inputUserName => _userNameStreamController.sink;
 
   @override
-  // TODO: implement inputIsAllInputs
-  Sink get inputIsAllInputs => _isAllInputsValidStreamController.sink;
+  Sink get inputIsAllInputValid => _isAllInputsValidStreamController.sink;
 
   @override
   login() async {
     inputState.add(
-      LoadingState(
-        stateRendererType: StateRendererType.POPUP_LOADING_STATE,
-      ),
-    );
+        LoadingState(stateRendererType: StateRendererType.POPUP_LOADING_STATE));
     (await _loginUseCase.execute(
-      LoginUseCaseInput(loginObject.userName, loginObject.password),
-    ))
+        LoginUseCaseInput(loginObject.userName, loginObject.password)))
         .fold(
-            (failure) => {
-                  // left->failure
-                  print(failure.message),
-                  inputState.add(
-                    ErrorState(
-                        StateRendererType.POPOUP_ERROR_STATE, failure.message),
-                  ),
-                },
-            (data) => {
-                  //right ->success(data)
-                  print(data.customer?.name),
-                  inputState.add(ContentState())
-                });
+            (failure) =>
+        {
+          // left -> failure
+          inputState.add(ErrorState(
+              StateRendererType.POPUP_ERROR_STATE, failure.message))
+        },
+            (data) {
+          // right -> success (data)
+          inputState.add(ContentState());
+
+          // navigate to main screen after the login
+          isUserLoggedInSuccessfullyStreamController.add("abcdefgh");
+        });
   }
 
   @override
   setPassword(String password) {
-    // TODO: implement setPassword
     inputPassword.add(password);
-    loginObject = loginObject.copyWith(password: password);
+    loginObject = loginObject.copyWith(
+        password: password); // data class operation same as kotlin
     _validate();
   }
 
   @override
   setUserName(String userName) {
-    // TODO: implement setUserName
     inputUserName.add(userName);
-    loginObject = loginObject.copyWith(userName: userName);
+    loginObject = loginObject.copyWith(
+        userName: userName); // data class operation same as kotlin
     _validate();
   }
 
+  // outputs
   @override
-  // TODO: implement outputIsPasswordValid
-  Stream<bool> get outputIsPasswordValid => _passwordStreamController.stream
-      .map((password) => _isPasswordValid(password));
+  Stream<bool> get outputIsPasswordValid =>
+      _passwordStreamController.stream
+          .map((password) => _isPasswordValid(password));
 
   @override
-  // TODO: implement outputIsUserNameValid
-  Stream<bool> get outputIsUserNameValid => _userNameStreamController.stream
-      .map((userName) => _isUsernameValid(userName));
+  Stream<bool> get outputIsUserNameValid =>
+      _userNameStreamController.stream
+          .map((userName) => _isUserNameValid(userName));
 
   @override
-  // TODO: implement outputIsAllInputsValid
   Stream<bool> get outputIsAllInputsValid =>
       _isAllInputsValidStreamController.stream.map((_) => _isAllInputsValid());
 
-  //private functions
+  // private functions
 
   _validate() {
-    inputIsAllInputs.add(null);
+    inputIsAllInputValid.add(null);
   }
 
   bool _isPasswordValid(String password) {
     return password.isNotEmpty;
   }
 
-  bool _isUsernameValid(String userName) {
+  bool _isUserNameValid(String userName) {
     return userName.isNotEmpty;
   }
 
   bool _isAllInputsValid() {
     return _isPasswordValid(loginObject.password) &&
-        _isUsernameValid(loginObject.userName);
+        _isUserNameValid(loginObject.userName);
   }
 }
 
-mixin LoginViewModelInputs {
-  //three functions
+abstract class LoginViewModelInputs {
+  // three functions for actions
   setUserName(String userName);
+
   setPassword(String password);
+
   login();
-  //two sinks
+
+// two sinks for streams
   Sink get inputUserName;
+
   Sink get inputPassword;
-  Sink get inputIsAllInputs;
+
+  Sink get inputIsAllInputValid;
 }
 
-mixin LoginViewModelOutputs {
+abstract class LoginViewModelOutputs {
   Stream<bool> get outputIsUserNameValid;
+
   Stream<bool> get outputIsPasswordValid;
+
   Stream<bool> get outputIsAllInputsValid;
 }

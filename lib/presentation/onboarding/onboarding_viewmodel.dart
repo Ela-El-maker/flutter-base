@@ -1,29 +1,29 @@
 import 'dart:async';
 
-import 'package:initial/presentation/base/baseViewModel.dart';
-import 'package:initial/presentation/onboarding/onboarding.dart';
-
-import '../resources/assets_manager.dart';
-import '../resources/strings_manager.dart';
+import 'package:initial/domain/model/model.dart';
+import 'package:initial/presentation/base/baseviewmodel.dart';
+import 'package:initial/presentation/resources/assets_manager.dart';
+import 'package:initial/presentation/resources/strings_manager.dart';
+import 'package:easy_localization/easy_localization.dart';
 
 class OnBoardingViewModel extends BaseViewModel
-    with OnboardingViewModelInputs, OnboardingViewModelOutputs {
+    with OnBoardingViewModelInputs, OnBoardingViewModelOutputs {
   // stream controllers
   final StreamController _streamController =
       StreamController<SliderViewObject>();
 
   late final List<SliderObject> _list;
+
   int _currentIndex = 0;
 
+  // inputs
   @override
   void dispose() {
-    // TODO: implement dispose
     _streamController.close();
   }
 
   @override
   void start() {
-    // TODO: implement start
     _list = _getSliderData();
     // send this slider data to our view
     _postDataToView();
@@ -31,73 +31,75 @@ class OnBoardingViewModel extends BaseViewModel
 
   @override
   int goNext() {
-    // TODO: implement goNext
-    int nextIndex = _currentIndex++;
+    int nextIndex = _currentIndex++; // +1
     if (nextIndex >= _list.length) {
-      _currentIndex = 0; // first item in the slider list
+      _currentIndex = 0; // infinite loop to go to first item inside the slider
     }
     return _currentIndex;
   }
 
   @override
   int goPrevious() {
-    // TODO: implement goPrevious
-    int previousIndex = _currentIndex--;
+    int previousIndex = _currentIndex--; // -1
     if (previousIndex == -1) {
       _currentIndex =
-          _list.length - 1; // Infiniete loop to go to the length of slider list
+          _list.length - 1; // infinite loop to go to the length of slider list
     }
-   
-
     return _currentIndex;
   }
 
   @override
   void onPageChanged(int index) {
-    // TODO: implement onPageChanged
     _currentIndex = index;
     _postDataToView();
   }
 
   @override
-  // TODO: implement inputSliderViewObject
   Sink get inputSliderViewObject => _streamController.sink;
 
+  // outputs
   @override
-  // TODO: implement outputSliderViewObject
   Stream<SliderViewObject> get outputSliderViewObject =>
-      _streamController.stream.map((SliderViewObject) => SliderViewObject);
+      _streamController.stream.map((slideViewObject) => slideViewObject);
 
-//private functions
+  // private functions
   List<SliderObject> _getSliderData() => [
-        SliderObject(AppStrings.onBoardingTitle1,
-            AppStrings.onBoardingSubTitle1, ImageAssets.onBoardingLogo1),
-        SliderObject(AppStrings.onBoardingTitle2,
-            AppStrings.onBoardingSubTitle2, ImageAssets.onBoardingLogo2),
-        SliderObject(AppStrings.onBoardingTitle3,
-            AppStrings.onBoardingSubTitle3, ImageAssets.onBoardingLogo3),
-        SliderObject(AppStrings.onBoardingTitle4,
-            AppStrings.onBoardingSubTitle4, ImageAssets.onBoardingLogo4),
+        SliderObject(
+            AppStrings.onBoardingTitle1.tr(),
+            AppStrings.onBoardingSubTitle1.tr(),
+            ImageAssets.onboardingLogo1),
+        SliderObject(
+            AppStrings.onBoardingTitle2.tr(),
+            AppStrings.onBoardingSubTitle2.tr(),
+            ImageAssets.onboardingLogo2),
+        SliderObject(
+            AppStrings.onBoardingTitle3.tr(),
+            AppStrings.onBoardingSubTitle3.tr(),
+            ImageAssets.onboardingLogo3),
+        SliderObject(
+            AppStrings.onBoardingTitle4.tr(),
+            AppStrings.onBoardingSubTitle4.tr(),
+            ImageAssets.onboardingLogo4)
       ];
+
   _postDataToView() {
     inputSliderViewObject.add(
-      SliderViewObject(_list[_currentIndex], _list.length, _currentIndex),
-    );
+        SliderViewObject(_list[_currentIndex], _list.length, _currentIndex));
   }
 }
 
-// inputs mean the orders that our view model will receive from our views
-mixin OnboardingViewModelInputs {
-  void goNext(); // when user clicks on right arrow or swipe right
-  void goPrevious(); // when user clicks left arrow or swipe left
+// inputs mean the orders that our view model will recieve from our view
+abstract class OnBoardingViewModelInputs {
+  void goNext(); // when user clicks on right arrow or swipe left.
+  void goPrevious(); // when user clicks on left arrow or swipe right.
   void onPageChanged(int index);
 
   Sink
-      get inputSliderViewObject; // This is the way to add data to the stream. . stream input
+      get inputSliderViewObject; // this is the way to add data to the stream .. stream input
 }
 
-// outputs means data or results taht will be sent from our view model to view
-mixin OnboardingViewModelOutputs {
+// outputs mean data or results that will be sent from our view model to our view
+abstract class OnBoardingViewModelOutputs {
   Stream<SliderViewObject> get outputSliderViewObject;
 }
 
@@ -105,5 +107,6 @@ class SliderViewObject {
   SliderObject sliderObject;
   int numOfSlides;
   int currentIndex;
+
   SliderViewObject(this.sliderObject, this.numOfSlides, this.currentIndex);
 }

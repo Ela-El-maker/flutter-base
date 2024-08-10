@@ -1,12 +1,12 @@
-import 'package:dartz/dartz.dart';
 import 'package:initial/app/functions.dart';
 import 'package:initial/data/network/failure.dart';
 import 'package:initial/data/request/request.dart';
 import 'package:initial/domain/model/model.dart';
 import 'package:initial/domain/repository/repository.dart';
 import 'package:initial/domain/usecase/base_usecase.dart';
+import 'package:dartz/dartz.dart';
 
-class LoginUseCase implements BaseUsecase<LoginUseCaseInput, Authentication> {
+class LoginUseCase implements BaseUseCase<LoginUseCaseInput, Authentication> {
   Repository _repository;
 
   LoginUseCase(this._repository);
@@ -15,14 +15,8 @@ class LoginUseCase implements BaseUsecase<LoginUseCaseInput, Authentication> {
   Future<Either<Failure, Authentication>> execute(
       LoginUseCaseInput input) async {
     DeviceInfo deviceInfo = await getDeviceDetails();
-    return await _repository.login(
-      LoginRequest(
-        input.email,
-        input.password,
-        deviceInfo.identifier,
-        deviceInfo.name,
-      ),
-    );
+    return await _repository.login(LoginRequest(
+        input.email, input.password, deviceInfo.identifier, deviceInfo.name));
   }
 }
 
